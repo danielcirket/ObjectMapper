@@ -10,7 +10,9 @@ Currently does not deal with complex objects (e.g. ArrayLists, HashTables, Custo
 
 ##### Objects
 
-500 Objects - 4ms
+| Number        | Time |
+|-------------------|--------|
+| 500            | 4ms  |
 
 ##### Individual Properties
 
