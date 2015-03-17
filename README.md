@@ -1,5 +1,7 @@
 ## ObjectMapper
 
+Super simple object mapper, didn't need the features in some of the bigger libraries so put this together for a personal project and thought I'd share it here.
+
 Hydrates objects from a datareader.
 
 DataTables get converted to a datareader to populate objects.
