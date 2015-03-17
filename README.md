@@ -7,7 +7,6 @@ Hydrates objects from a datareader.
 Currently does not deal with complex objects (e.g. ArrayLists, HashTables, Custom Objects etc).
 
 ### Usage Examples
-___
 
 **Single row to Object**  
 ```ObjectMapper.FillObject\<T\>( datareader );```  
@@ -21,7 +20,7 @@ ___
 A DataTable can also be passed to the methods, this will simple call .CreateDataReader() on the DataTable and pass to one of the above method(s).
 
 ### Tests
-___
+
 ##### Objects
 
 | Number        | Time |
