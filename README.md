@@ -6,6 +6,8 @@ Hydrates objects from a datareader.
 
 Currently does not deal with complex objects (e.g. ArrayLists, HashTables, Custom Objects etc).
 
+
+
 ### Usage Examples
 
 **Single row to Object**  
@@ -19,13 +21,17 @@ Currently does not deal with complex objects (e.g. ArrayLists, HashTables, Custo
 
 A DataTable can also be passed to the methods, this will simple call .CreateDataReader() on the DataTable and pass to one of the above method(s).
 
+
+
 ### Tests
+
 
 ##### Objects
 
 | Number        | Time |
 |-------------------|--------|
 | 500            | ~8ms (25ms including populating datatable)  |
+
 
 ##### Individual Properties
 
