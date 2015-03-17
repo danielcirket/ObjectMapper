@@ -187,6 +187,96 @@ namespace Tests
             Assert.AreEqual(true, result[0].BitProp);
             Assert.AreEqual(12.99m, result[0].DecimalProp);
         }
+
+        [Test]
+        public void ObjectMapper_FillObject_5000_Items()
+        {
+            var dataTable = new DataTable("ObjectTable");
+
+            dataTable.Columns.Add("IntProp", typeof(int));
+            dataTable.Columns.Add("StringProp", typeof(string));
+            dataTable.Columns.Add("DateTimeProp", typeof(DateTime));
+            dataTable.Columns.Add("ByteArrayProp", typeof(Byte[]));
+            dataTable.Columns.Add("ArrayProp", typeof(Array));
+            dataTable.Columns.Add("BitProp", typeof(Boolean));
+            dataTable.Columns.Add("DecimalProp", typeof(decimal));
+
+            var bytearray = Encoding.ASCII.GetBytes("Hello This is test");
+
+            for (int i = 0; i < 5000; i++)
+            {
+                dataTable.Rows.Add(
+                10,
+                "string",
+                DateTime.Today,
+                bytearray,
+                bytearray,
+                true,
+                12.99m);
+            }
+
+            var watch = Stopwatch.StartNew();
+
+            var result = ObjectMapper.FillCollection<TestObject>(dataTable.CreateDataReader());
+
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+
+            Console.WriteLine("Performance Test: Populating 500 Objects from a DataTable (Converted to a Datareader when populating) took: " + elapsedMs + "ms");
+
+            Assert.AreEqual(10, result[0].IntProp);
+            Assert.AreEqual("string", result[0].StringProp);
+            Assert.AreEqual(DateTime.Today, result[0].DateTimeProp);
+            Assert.AreEqual(bytearray, result[0].ByteArrayProp);
+            Assert.AreEqual(bytearray, result[0].ArrayProp);
+            Assert.AreEqual(true, result[0].BitProp);
+            Assert.AreEqual(12.99m, result[0].DecimalProp);
+        }
+
+        [Test]
+        public void ObjectMapper_FillObject_50000_Items()
+        {
+            var dataTable = new DataTable("ObjectTable");
+
+            dataTable.Columns.Add("IntProp", typeof(int));
+            dataTable.Columns.Add("StringProp", typeof(string));
+            dataTable.Columns.Add("DateTimeProp", typeof(DateTime));
+            dataTable.Columns.Add("ByteArrayProp", typeof(Byte[]));
+            dataTable.Columns.Add("ArrayProp", typeof(Array));
+            dataTable.Columns.Add("BitProp", typeof(Boolean));
+            dataTable.Columns.Add("DecimalProp", typeof(decimal));
+
+            var bytearray = Encoding.ASCII.GetBytes("Hello This is test");
+
+            for (int i = 0; i < 50000; i++)
+            {
+                dataTable.Rows.Add(
+                10,
+                "string",
+                DateTime.Today,
+                bytearray,
+                bytearray,
+                true,
+                12.99m);
+            }
+
+            var watch = Stopwatch.StartNew();
+
+            var result = ObjectMapper.FillCollection<TestObject>(dataTable.CreateDataReader());
+
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+
+            Console.WriteLine("Performance Test: Populating 500 Objects from a DataTable (Converted to a Datareader when populating) took: " + elapsedMs + "ms");
+
+            Assert.AreEqual(10, result[0].IntProp);
+            Assert.AreEqual("string", result[0].StringProp);
+            Assert.AreEqual(DateTime.Today, result[0].DateTimeProp);
+            Assert.AreEqual(bytearray, result[0].ByteArrayProp);
+            Assert.AreEqual(bytearray, result[0].ArrayProp);
+            Assert.AreEqual(true, result[0].BitProp);
+            Assert.AreEqual(12.99m, result[0].DecimalProp);
+        }
     }
 
     [TestFixture]
