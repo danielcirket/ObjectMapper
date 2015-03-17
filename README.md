@@ -30,7 +30,7 @@ A DataTable can also be passed to the methods, this will simple call .CreateData
 
 | Number        | Time |
 |-------------------|--------|
-| 500            | ~8ms (25ms including populating datatable)  |
+| 500            | ~8ms  |
 
 
 ##### Individual Properties
