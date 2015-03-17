@@ -4,7 +4,7 @@ Super simple object mapper, didn't need the features in some of the bigger libra
 
 Hydrates objects from a datareader.
 
-Currently does not deal with complex objects (e.g. ArrayLists, HashTables, Custom Objects etc).
+Currently does not deal with complex object properties (e.g. ArrayLists, HashTables, Custom Objects etc).
 
 
 
