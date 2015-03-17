@@ -10,8 +10,10 @@ Currently does not deal with complex objects (e.g. ArrayLists, HashTables, Custo
 
 // Single row to Object
 ObjectMapper.FillObject<T>( datareader );
+
 // Single column to object
 ObjectMapper.FillObject<int>( datareader );
+
 // Multiple rows to List<T>
 ObjectMapper.FillCollection<T>( datareader );
 
