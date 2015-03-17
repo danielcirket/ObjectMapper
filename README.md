@@ -12,7 +12,7 @@ Currently does not deal with complex objects (e.g. ArrayLists, HashTables, Custo
 
 | Number        | Time |
 |-------------------|--------|
-| 500            | ~2ms (4ms including populating datatable)  |
+| 500            | ~8ms (25ms including populating datatable)  |
 
 ##### Individual Properties
 
