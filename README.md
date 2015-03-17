@@ -32,7 +32,7 @@ A DataTable can also be passed to the methods, this will simple call .CreateData
 |-------------------|--------|
 | 500            | ~8ms  |
 | 5000            | ~27ms  |
-| 50000            | ~308ms  |
+| 50000            | ~280ms  |
 
 
 ##### Individual Properties
