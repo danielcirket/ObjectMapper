@@ -1,5 +1,5 @@
 ﻿using DanielCirket.ObjectMapper;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System;
 using System.Data;
 using System.Diagnostics;
@@ -7,10 +7,10 @@ using System.Text;
 
 namespace Tests
 {
-    [TestClass]
+    [TestFixture]
     public class ObjectMapperTests
     {
-        [TestMethod]
+        [Test]
         public void ObjectMapper_FillObject_int()
         {
             var dataTable = new DataTable("ObjectTable");
@@ -20,12 +20,11 @@ namespace Tests
 
             var result = ObjectMapper.FillObject<TestObject>(dataTable.CreateDataReader());
 
-            Assert.IsInstanceOfType(result, typeof(TestObject));
             Assert.IsNotNull(result);
             Assert.AreEqual(colValue, result.IntProp);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectMapper_FillObject_string()
         {
             var dataTable = new DataTable("ObjectTable");
@@ -35,12 +34,11 @@ namespace Tests
 
             var result = ObjectMapper.FillObject<TestObject>(dataTable.CreateDataReader());
 
-            Assert.IsInstanceOfType(result, typeof(TestObject));
             Assert.IsNotNull(result);
             Assert.AreEqual(colValue, result.StringProp);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectMapper_FillObject_datetime()
         {
             var dataTable = new DataTable("ObjectTable");
@@ -51,12 +49,11 @@ namespace Tests
 
             var result = ObjectMapper.FillObject<TestObject>(dataTable.CreateDataReader());
 
-            Assert.IsInstanceOfType(result, typeof(TestObject));
             Assert.IsNotNull(result);
             Assert.AreEqual(colValue, result.DateTimeProp);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectMapper_FillObject_binary()
         {
             var dataTable = new DataTable("ObjectTable");
@@ -67,12 +64,11 @@ namespace Tests
 
             var result = ObjectMapper.FillObject<TestObject>(dataTable.CreateDataReader());
 
-            Assert.IsInstanceOfType(result, typeof(TestObject));
             Assert.IsNotNull(result);
             Assert.AreEqual(colValue, result.ByteArrayProp);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectMapper_FillObject_binary_to_Array()
         {
             var dataTable = new DataTable("ObjectTable");
@@ -83,12 +79,11 @@ namespace Tests
 
             var result = ObjectMapper.FillObject<TestObject>(dataTable.CreateDataReader());
 
-            Assert.IsInstanceOfType(result, typeof(TestObject));
             Assert.IsNotNull(result);
             Assert.AreEqual(colValue, result.ArrayProp);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectMapper_FillObject_bit()
         {
             var dataTable = new DataTable("ObjectTable");
@@ -99,12 +94,11 @@ namespace Tests
 
             var result = ObjectMapper.FillObject<TestObject>(dataTable.CreateDataReader());
 
-            Assert.IsInstanceOfType(result, typeof(TestObject));
             Assert.IsNotNull(result);
             Assert.AreEqual(colValue, result.BitProp);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectMapper_FillObject_decimal()
         {
             var dataTable = new DataTable("ObjectTable");
@@ -115,12 +109,11 @@ namespace Tests
 
             var result = ObjectMapper.FillObject<TestObject>(dataTable.CreateDataReader());
 
-            Assert.IsInstanceOfType(result, typeof(TestObject));
             Assert.IsNotNull(result);
             Assert.AreEqual(colValue, result.DecimalProp);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectMapper_FillObject_int_to_boolean_true()
         {
             var dataTable = new DataTable("ObjectTable");
@@ -131,12 +124,11 @@ namespace Tests
 
             var result = ObjectMapper.FillObject<TestObject>(dataTable.CreateDataReader());
 
-            Assert.IsInstanceOfType(result, typeof(TestObject));
             Assert.IsNotNull(result);
             Assert.AreEqual(true, result.BitProp);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectMapper_FillObject_int_to_boolean_false()
         {
             var dataTable = new DataTable("ObjectTable");
@@ -146,13 +138,12 @@ namespace Tests
             dataTable.Rows.Add(colValue);
 
             var result = ObjectMapper.FillObject<TestObject>(dataTable.CreateDataReader());
-
-            Assert.IsInstanceOfType(result, typeof(TestObject));
+            
             Assert.IsNotNull(result);
             Assert.AreEqual(false, result.BitProp);
         }
 
-        [TestMethod]
+        [Test]
         public void ObjectMapper_FillObject_500_Items()
         {
             var dataTable = new DataTable("ObjectTable");
@@ -198,6 +189,7 @@ namespace Tests
         }
     }
 
+    [TestFixture]
     public class TestObject
     {
         public int IntProp { get; set; }
