@@ -4,9 +4,18 @@ Super simple object mapper, didn't need the features in some of the bigger libra
 
 Hydrates objects from a datareader.
 
-DataTables get converted to a datareader to populate objects.
-
 Currently does not deal with complex objects (e.g. ArrayLists, HashTables, Custom Objects etc).
+
+### Usage Examples
+
+// Single row to Object
+ObjectMapper.FillObject<T>( datareader );
+// Single column to object
+ObjectMapper.FillObject<int>( datareader );
+// Multiple rows to List<T>
+ObjectMapper.FillCollection<T>( datareader );
+
+A DataTable can also be passed to the methods, this will simple call .CreateDataReader() on the DataTable and pass to one of the above method(s).
 
 ### Tests
 
