@@ -14,7 +14,7 @@ Currently does not deal with complex objects (e.g. ArrayLists, HashTables, Custo
 
 ##### Individual Properties
 
-| ###### Property        | ###### Time |
+| Property        | Time |
 |-------------------|--------|
 | Binary            | < 1ms  |
 | Binary to Array   | < 1ms  |
