@@ -10,7 +10,7 @@ Currently does not deal with complex object properties (e.g. ArrayLists, HashTab
 
 ### Usage Examples
 
-#### IDataReader
+##### IDataReader
 
 **Single row to Object**  
 ```ObjectMapper.FillObject<T>( dataReader );```  
@@ -21,7 +21,7 @@ Currently does not deal with complex object properties (e.g. ArrayLists, HashTab
 **Multiple rows to List\<T\>**  
 ```ObjectMapper.FillCollection<T>( dataReader );```
 
-#### DataTable
+##### DataTable
 
 **Single row to Object**  
 ```ObjectMapper.FillObject<T>( dataTable );```  
