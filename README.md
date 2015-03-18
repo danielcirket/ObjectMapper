@@ -10,17 +10,27 @@ Currently does not deal with complex object properties (e.g. ArrayLists, HashTab
 
 ### Usage Examples
 
+#### IDataReader
+
 **Single row to Object**  
-```ObjectMapper.FillObject<T>( datareader );```  
+```ObjectMapper.FillObject<T>( dataReader );```  
 
 **Single column to object**  
-```ObjectMapper.FillObject<int>( datareader );```  
+```ObjectMapper.FillObject<int>( dataReader );```  
 
 **Multiple rows to List\<T\>**  
-```ObjectMapper.FillCollection<T>( datareader );```
+```ObjectMapper.FillCollection<T>( dataReader );```
 
-A DataTable can also be passed to the methods, this will simple call .CreateDataReader() on the DataTable and pass to one of the above method(s).
+#### DataTable
 
+**Single row to Object**  
+```ObjectMapper.FillObject<T>( dataTable );```  
+
+**Single column to object**  
+```ObjectMapper.FillObject<int>( dataTable );```  
+
+**Multiple rows to List\<T\>**  
+```ObjectMapper.FillCollection<T>( dataTable );```
 
 
 ### Tests
