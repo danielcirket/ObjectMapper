@@ -2,7 +2,7 @@
 
 Super simple object mapper, didn't need the features in some of the bigger libraries so put this together for a personal project and thought I'd share it here.
 
-Hydrates objects from a datareader.
+Hydrates objects from a datareader or datatable.
 
 Currently does not deal with complex object properties (e.g. ArrayLists, HashTables, Custom Objects etc).
 
@@ -18,18 +18,6 @@ Currently does not deal with complex object properties (e.g. ArrayLists, HashTab
 
 **Multiple rows to List\<T\>**  
 ```ObjectMapper.FillCollection<T>( dataReader );```
-
-
-
-
-**Single row to Object**  
-```ObjectMapper.FillObject<T>( dataTable );```  
-
-**Single column to object**  
-```ObjectMapper.FillObject<int>( dataTable );```  
-
-**Multiple rows to List\<T\>**  
-```ObjectMapper.FillCollection<T>( dataTable );```
 
 
 ### Tests
