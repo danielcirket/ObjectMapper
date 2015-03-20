@@ -33,21 +33,4 @@ Currently does not deal with complex object properties (e.g. ArrayLists, HashTab
 | 50000 New Items               | 209.56ms  | 200.54ms | 226.01ms | 100           |
 | 1 New Item with Callback      | 0.005ms   | 0.004ms  | 0.02ms   | 500           |
 | 1 Existing Item               | 0.004ms   | 0.0039ms | 0.02ms   | 500           |
-| 1 Existing Item with Callback | 0.04ms    | 0.0039ms | 0.69ms   | 500           |
-
-
-##### Individual Properties
-
-| # Property        | # Average | # Min  | # Max  | # Repetitions |
-|-------------------|-----------|--------|--------|---------------|
-| Binary            | 0.08ms    | 0.07ms | 0.20ms | 500           |
-| Binary to Array   | 0.075ms   | 0.07ms | 0.17ms | 500           |
-| Bit               | 0.075ms   | 0.07ms | 0.15ms | 500           |
-| DateTime          | 0.075ms   | 0.07ms | 0.14ms | 500           |
-| Decimal           | 0.075ms   | 0.07ms | 0.13ms | 500           |
-| Int               | 0.075ms   | 0.07ms | 0.16ms | 500           |
-| Int to Bool False | 0.11ms    | 0.10ms | 0.69ms | 500           |
-| Int to Bool True  | 0.11ms    | 0.10ms | 0.20ms | 500           |
-| String            | 0.075ms   | 0.07ms | 0.60ms | 500           |
-
-
+| 1 Existing Item with Callback | 0.004ms    | 0.0039ms | 0.69ms   | 500           |
