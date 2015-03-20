@@ -19,13 +19,13 @@ Currently does not deal with complex object properties (e.g. ArrayLists, HashTab
 **Multiple rows to List\<T\>**  
 ```ObjectMapper.FillCollection<T>( dataReader );```
 
-**Single row to Object with Callback**
+**Single row to Object with Callback**  
 ```ObjectMapper.FillObject<T>( dataReader, (T) => { T.SomeMethod(); });```
 
-**Single row to Existing Object**
+**Single row to Existing Object**  
 ```ObjectMapper.FillObject<T>( dataReader, existingObject);```
 
-**Single row to Existing Object with Callback**
+**Single row to Existing Object with Callback**  
 ```ObjectMapper.FillObject<T>( dataReader, existingObject, (T) => { T.SomeMethod(); });```
 
 
