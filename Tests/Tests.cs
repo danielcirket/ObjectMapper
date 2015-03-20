@@ -4,6 +4,8 @@ using System;
 using System.Data;
 using System.Diagnostics;
 using System.Text;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Tests
 {
@@ -18,7 +20,12 @@ namespace Tests
             dataTable.Columns.Add("IntProp", typeof(int));
             dataTable.Rows.Add(colValue);
 
-            var result = ObjectMapper.FillObject<TestObject>(dataTable.CreateDataReader());
+            TestObject result = null;
+
+            Measure("FillObject Int", 500, () =>
+            {
+                result = ObjectMapper.FillObject<TestObject>(dataTable);
+            });
 
             Assert.IsNotNull(result);
             Assert.AreEqual(colValue, result.IntProp);
@@ -32,7 +39,12 @@ namespace Tests
             dataTable.Columns.Add("StringProp", typeof(String));
             dataTable.Rows.Add(colValue);
 
-            var result = ObjectMapper.FillObject<TestObject>(dataTable.CreateDataReader());
+            TestObject result = null;
+
+            Measure("FillObject String", 500, () =>
+            {
+                result = ObjectMapper.FillObject<TestObject>(dataTable);
+            });
 
             Assert.IsNotNull(result);
             Assert.AreEqual(colValue, result.StringProp);
@@ -47,7 +59,12 @@ namespace Tests
             dataTable.Columns.Add("DateTimeProp", typeof(DateTime));
             dataTable.Rows.Add(colValue);
 
-            var result = ObjectMapper.FillObject<TestObject>(dataTable.CreateDataReader());
+            TestObject result = null;
+
+            Measure("FillObject DateTime", 500, () =>
+            {
+                result = ObjectMapper.FillObject<TestObject>(dataTable);
+            });
 
             Assert.IsNotNull(result);
             Assert.AreEqual(colValue, result.DateTimeProp);
@@ -62,7 +79,12 @@ namespace Tests
             dataTable.Columns.Add("ByteArrayProp", typeof(byte[]));
             dataTable.Rows.Add(colValue);
 
-            var result = ObjectMapper.FillObject<TestObject>(dataTable.CreateDataReader());
+            TestObject result = null;
+
+            Measure("FillObject Binary", 500, () =>
+            {
+                result = ObjectMapper.FillObject<TestObject>(dataTable);
+            });
 
             Assert.IsNotNull(result);
             Assert.AreEqual(colValue, result.ByteArrayProp);
@@ -77,7 +99,12 @@ namespace Tests
             dataTable.Columns.Add("ArrayProp", typeof(byte[]));
             dataTable.Rows.Add(colValue);
 
-            var result = ObjectMapper.FillObject<TestObject>(dataTable.CreateDataReader());
+            TestObject result = null;
+
+            Measure("FillObject Binary to Array", 500, () =>
+            {
+                result = ObjectMapper.FillObject<TestObject>(dataTable);
+            });
 
             Assert.IsNotNull(result);
             Assert.AreEqual(colValue, result.ArrayProp);
@@ -92,7 +119,12 @@ namespace Tests
             dataTable.Columns.Add("BitProp", typeof(Boolean));
             dataTable.Rows.Add(colValue);
 
-            var result = ObjectMapper.FillObject<TestObject>(dataTable.CreateDataReader());
+            TestObject result = null;
+
+            Measure("FillObject Bit", 500, () =>
+            {
+                result = ObjectMapper.FillObject<TestObject>(dataTable);
+            });
 
             Assert.IsNotNull(result);
             Assert.AreEqual(colValue, result.BitProp);
@@ -107,7 +139,12 @@ namespace Tests
             dataTable.Columns.Add("DecimalProp", typeof(decimal));
             dataTable.Rows.Add(colValue);
 
-            var result = ObjectMapper.FillObject<TestObject>(dataTable.CreateDataReader());
+            TestObject result = null;
+
+            Measure("FillObject Decimal", 500, () =>
+            {
+                result = ObjectMapper.FillObject<TestObject>(dataTable);
+            });
 
             Assert.IsNotNull(result);
             Assert.AreEqual(colValue, result.DecimalProp);
@@ -122,7 +159,12 @@ namespace Tests
             dataTable.Columns.Add("BitProp", typeof(int));
             dataTable.Rows.Add(colValue);
 
-            var result = ObjectMapper.FillObject<TestObject>(dataTable.CreateDataReader());
+            TestObject result = null;
+
+            Measure("FillObject Int to Bool True", 500, () =>
+            {
+                result = ObjectMapper.FillObject<TestObject>(dataTable);
+            });
 
             Assert.IsNotNull(result);
             Assert.AreEqual(true, result.BitProp);
@@ -137,10 +179,58 @@ namespace Tests
             dataTable.Columns.Add("BitProp", typeof(int));
             dataTable.Rows.Add(colValue);
 
-            var result = ObjectMapper.FillObject<TestObject>(dataTable.CreateDataReader());
+            TestObject result = null;
+
+            Measure("FillObject Into to Bool True", 500, () =>
+            {
+                result = ObjectMapper.FillObject<TestObject>(dataTable);
+            });
             
             Assert.IsNotNull(result);
             Assert.AreEqual(false, result.BitProp);
+        }
+
+        [Test]
+        public void ObjectMapper_FillObject_1_Items()
+        {
+            var dataTable = new DataTable("ObjectTable");
+
+            dataTable.Columns.Add("IntProp", typeof(int));
+            dataTable.Columns.Add("StringProp", typeof(string));
+            dataTable.Columns.Add("DateTimeProp", typeof(DateTime));
+            dataTable.Columns.Add("ByteArrayProp", typeof(Byte[]));
+            dataTable.Columns.Add("ArrayProp", typeof(Array));
+            dataTable.Columns.Add("BitProp", typeof(Boolean));
+            dataTable.Columns.Add("DecimalProp", typeof(decimal));
+
+            var bytearray = Encoding.ASCII.GetBytes("Hello This is test");
+
+
+            dataTable.Rows.Add(
+                    10,
+                    "string",
+                    DateTime.Today,
+                    bytearray,
+                    bytearray,
+                    true,
+                    12.99m
+                );
+
+
+            TestObject result = null;
+
+            Measure("FillObject Single Item", 500, () =>
+            {
+                result = ObjectMapper.FillObject<TestObject>(dataTable);
+            });
+
+            Assert.AreEqual(10, result.IntProp);
+            Assert.AreEqual("string", result.StringProp);
+            Assert.AreEqual(DateTime.Today, result.DateTimeProp);
+            Assert.AreEqual(bytearray, result.ByteArrayProp);
+            Assert.AreEqual(bytearray, result.ArrayProp);
+            Assert.AreEqual(true, result.BitProp);
+            Assert.AreEqual(12.99m, result.DecimalProp);
         }
 
         [Test]
@@ -170,14 +260,12 @@ namespace Tests
                 12.99m);
             }
 
-            var watch = Stopwatch.StartNew();
+            List<TestObject> result = null;
 
-            var result = ObjectMapper.FillCollection<TestObject>(dataTable.CreateDataReader());
-
-            watch.Stop();
-            var elapsedMs = watch.ElapsedMilliseconds;
-
-            Console.WriteLine("Performance Test: Populating 500 Objects from a DataTable (Converted to a Datareader when populating) took: " + elapsedMs + "ms");
+            Measure("FillObject 500 Items", 500, () =>
+            {
+                result = ObjectMapper.FillCollection<TestObject>(dataTable);
+            });
 
             Assert.AreEqual(10, result[0].IntProp);
             Assert.AreEqual("string", result[0].StringProp);
@@ -215,14 +303,12 @@ namespace Tests
                 12.99m);
             }
 
-            var watch = Stopwatch.StartNew();
+            List<TestObject> result = null;
 
-            var result = ObjectMapper.FillCollection<TestObject>(dataTable.CreateDataReader());
-
-            watch.Stop();
-            var elapsedMs = watch.ElapsedMilliseconds;
-
-            Console.WriteLine("Performance Test: Populating 500 Objects from a DataTable (Converted to a Datareader when populating) took: " + elapsedMs + "ms");
+            Measure("FillObject 5000 Items", 250, () =>
+            {
+                result = ObjectMapper.FillCollection<TestObject>(dataTable);
+            });
 
             Assert.AreEqual(10, result[0].IntProp);
             Assert.AreEqual("string", result[0].StringProp);
@@ -260,14 +346,12 @@ namespace Tests
                 12.99m);
             }
 
-            var watch = Stopwatch.StartNew();
+            List<TestObject> result = null;
 
-            var result = ObjectMapper.FillCollection<TestObject>(dataTable.CreateDataReader());
-
-            watch.Stop();
-            var elapsedMs = watch.ElapsedMilliseconds;
-
-            Console.WriteLine("Performance Test: Populating 500 Objects from a DataTable (Converted to a Datareader when populating) took: " + elapsedMs + "ms");
+            Measure("FillObject 50000 Items", 100, () =>
+            {
+                result = ObjectMapper.FillCollection<TestObject>(dataTable);
+            });
 
             Assert.AreEqual(10, result[0].IntProp);
             Assert.AreEqual("string", result[0].StringProp);
@@ -276,6 +360,153 @@ namespace Tests
             Assert.AreEqual(bytearray, result[0].ArrayProp);
             Assert.AreEqual(true, result[0].BitProp);
             Assert.AreEqual(12.99m, result[0].DecimalProp);
+        }
+
+        [Test]
+        public void ObjectMapper_FillObject_CallbackTest()
+        {
+            var dataTable = new DataTable("ObjectTable");
+
+            dataTable.Columns.Add("IntProp", typeof(int));
+            dataTable.Columns.Add("StringProp", typeof(string));
+            dataTable.Columns.Add("DateTimeProp", typeof(DateTime));
+            dataTable.Columns.Add("ByteArrayProp", typeof(Byte[]));
+            dataTable.Columns.Add("ArrayProp", typeof(Array));
+            dataTable.Columns.Add("BitProp", typeof(Boolean));
+            dataTable.Columns.Add("DecimalProp", typeof(decimal));
+
+            var bytearray = Encoding.ASCII.GetBytes("Hello This is test");
+            var modifiedByteArray = Encoding.ASCII.GetBytes("Modified byte array");
+           
+            dataTable.Rows.Add(
+                    10,
+                    "string",
+                    DateTime.Today,
+                    bytearray,
+                    bytearray,
+                    true,
+                    12.99m
+                );
+
+            TestObject result = null;
+
+            Measure("FillObject Single Item with Callback", 500, () =>
+            {
+                result = ObjectMapper.FillObject<TestObject>(dataTable, (T) =>
+                {
+                    T.ModifyItems();
+                });
+            });
+
+            Assert.AreEqual(1, result.IntProp);
+            Assert.AreEqual("blah", result.StringProp);
+            Assert.AreEqual(new DateTime(2015, 1, 1), result.DateTimeProp);
+            Assert.AreEqual(modifiedByteArray, result.ByteArrayProp);
+            Assert.AreEqual(modifiedByteArray, result.ArrayProp);
+            Assert.AreEqual(false, result.BitProp);
+            Assert.AreEqual(9.99m, result.DecimalProp);
+        }
+
+        [Test]
+        public void ObjectMapper_FillObject_1_Existing_Items()
+        {
+            var dataTable = new DataTable("ObjectTable");
+
+            dataTable.Columns.Add("IntProp", typeof(int));
+            dataTable.Columns.Add("StringProp", typeof(string));
+            dataTable.Columns.Add("DateTimeProp", typeof(DateTime));
+            dataTable.Columns.Add("ByteArrayProp", typeof(Byte[]));
+            dataTable.Columns.Add("ArrayProp", typeof(Array));
+            dataTable.Columns.Add("BitProp", typeof(Boolean));
+            dataTable.Columns.Add("DecimalProp", typeof(decimal));
+
+            var bytearray = Encoding.ASCII.GetBytes("Hello This is test");
+
+            dataTable.Rows.Add(
+                    10,
+                    "string",
+                    DateTime.Today,
+                    bytearray,
+                    bytearray,
+                    true,
+                    12.99m
+                );
+
+            TestObject result = null;
+
+            Measure("FillObject Single Existing Item", 500, () => 
+            {
+                result = ObjectMapper.FillObject<TestObject>(dataTable, new TestObject());
+            });
+
+            Assert.AreEqual(10, result.IntProp);
+            Assert.AreEqual("string", result.StringProp);
+            Assert.AreEqual(DateTime.Today, result.DateTimeProp);
+            Assert.AreEqual(bytearray, result.ByteArrayProp);
+            Assert.AreEqual(bytearray, result.ArrayProp);
+            Assert.AreEqual(true, result.BitProp);
+            Assert.AreEqual(12.99m, result.DecimalProp);
+        }
+
+        [Test]
+        public void ObjectMapper_FillObject_1_Existing_Items_With_Callback()
+        {
+            var dataTable = new DataTable("ObjectTable");
+
+            dataTable.Columns.Add("IntProp", typeof(int));
+            dataTable.Columns.Add("StringProp", typeof(string));
+            dataTable.Columns.Add("DateTimeProp", typeof(DateTime));
+            dataTable.Columns.Add("ByteArrayProp", typeof(Byte[]));
+            dataTable.Columns.Add("ArrayProp", typeof(Array));
+            dataTable.Columns.Add("BitProp", typeof(Boolean));
+            dataTable.Columns.Add("DecimalProp", typeof(decimal));
+
+            var bytearray = Encoding.ASCII.GetBytes("Hello This is test");
+            var modifiedByteArray = Encoding.ASCII.GetBytes("Modified byte array");
+
+            dataTable.Rows.Add(
+                    10,
+                    "string",
+                    DateTime.Today,
+                    bytearray,
+                    bytearray,
+                    true,
+                    12.99m
+                );
+
+            TestObject result = null;
+
+            Measure("FillObject Single Existing Item with Callback", 500, () => 
+            {
+                result = ObjectMapper.FillObject<TestObject>(dataTable, new TestObject(), (T) => { T.ModifyItems(); });
+            });
+
+            Assert.AreEqual(1, result.IntProp);
+            Assert.AreEqual("blah", result.StringProp);
+            Assert.AreEqual(new DateTime(2015, 1, 1), result.DateTimeProp);
+            Assert.AreEqual(modifiedByteArray, result.ByteArrayProp);
+            Assert.AreEqual(modifiedByteArray, result.ArrayProp);
+            Assert.AreEqual(false, result.BitProp);
+            Assert.AreEqual(9.99m, result.DecimalProp);
+        }
+
+        private static void Measure(string title, int reps, Action action)
+        {
+            // Warmup
+            action();
+
+            double[] results = new double[reps];
+
+            for (int i = 0; i < reps; i++)
+            {
+                Stopwatch stopwatch = Stopwatch.StartNew();
+
+                action();
+
+                results[i] = stopwatch.Elapsed.TotalMilliseconds;
+            }
+
+            Console.WriteLine("{0} - Average: {1}, Min: {2}, Max: {3}", title, results.Average(), results.Min(), results.Max());
         }
     }
 
@@ -291,5 +522,18 @@ namespace Tests
         public decimal DecimalProp { get; set; }
 
         public TestObject() { }
+
+        public void ModifyItems()
+        {
+            var modifiedByteArray = Encoding.ASCII.GetBytes("Modified byte array");
+
+            IntProp = 1;
+            StringProp = "blah";
+            DateTimeProp = new DateTime(2015, 1, 1);
+            ByteArrayProp = modifiedByteArray;
+            ArrayProp = modifiedByteArray;
+            BitProp = false;
+            DecimalProp = 9.99m;
+        }
     }
 }
