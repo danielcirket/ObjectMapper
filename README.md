@@ -28,6 +28,7 @@ Currently does not deal with complex object properties (e.g. ArrayLists, HashTab
 **Single row to Existing Object with Callback**  
 ```ObjectMapper.FillObject<T>( dataReader, existingObject, (T) => { T.SomeMethod(); });```
 
+*Please note: currently existing object properties will be overwritten if they exist in the datareader/datatable.*
 
 ### Tests
 
