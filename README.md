@@ -38,7 +38,7 @@ Currently does not deal with complex object properties (e.g. ArrayLists, HashTab
 
 ##### Objects
 
-| No of Objects                              | Average  | Min      | Max      | # Repetitions |
+| No of Objects                              | Average  | Min      | Max      | Repetitions |
 |--------------------------------------------|----------|----------|----------|---------------|
 | 1 New Item                                 | 0.004ms  | 0.004ms  | 0.02ms   | 500           |
 | 500 New Items                              | 1.90ms   | 1.72ms   | 5.50ms   | 500           |
