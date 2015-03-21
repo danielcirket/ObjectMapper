@@ -39,72 +39,72 @@ namespace DanielCirket.ObjectMapper
             return (T)Convert.ChangeType(obj, typeof(T));
         }
 
-        public static T FillObject<T>(IDataReader dataReader)
+        public static T FillObject<T>(IDataReader datareader) where T : class
         {
             T fillObject;
 
             bool shouldContinue = false;
 
-            if (dataReader != null && dataReader.Read())
+            if (datareader != null && datareader.Read())
             {
                 shouldContinue = true;
             }
 
             if (shouldContinue)
             {
-                fillObject = CreateObject<T>(dataReader);
+                fillObject = CreateObject<T>(datareader);
             }
             else
             {
                 fillObject = default(T);
             }
 
-            if (dataReader != null)
+            if (datareader != null)
             {
-                dataReader.Close();
+                datareader.Close();
             }
 
             return fillObject;
         }
-        public static T FillObject<T>(IDataReader dataReader, Action<T> callback)
+        public static T FillObject<T>(IDataReader datareader, Action<T> callback) where T : class
         {
-            var result = FillObject<T>(dataReader);
+            var result = FillObject<T>(datareader);
 
             if (result != null)
                 callback(result);
 
             return result;
         }
-        public static T FillObject<T>(IDataReader dataReader, T instance) where T : class
+        public static T FillObject<T>(IDataReader datareader, T instance, bool overwriteExstingProperties) where T : class
         {
             T fillObject;
 
             bool shouldContinue = false;
 
-            if (dataReader != null && dataReader.Read())
+            if (datareader != null && datareader.Read())
             {
                 shouldContinue = true;
             }
 
             if (shouldContinue)
             {
-                fillObject = FillExistingObject<T>(dataReader, instance);
+                fillObject = CreateObject<T>(datareader, instance, overwriteExstingProperties);
             }
             else
             {
                 fillObject = default(T);
             }
 
-            if (dataReader != null)
+            if (datareader != null)
             {
-                dataReader.Close();
+                datareader.Close();
             }
 
             return fillObject;
         }
-        public static T FillObject<T>(IDataReader dataReader, T instance, Action<T> callback) where T : class
+        public static T FillObject<T>(IDataReader datareader, T instance, bool overwriteExstingProperties, Action<T> callback) where T : class
         {
-            var result = FillObject<T>(dataReader, instance);
+            var result = FillObject<T>(datareader, instance, overwriteExstingProperties);
 
             if (result != null)
                 callback(result);
@@ -112,11 +112,11 @@ namespace DanielCirket.ObjectMapper
             return result;
         }
 
-        public static T FillObject<T>(DataTable dataTable)
+        public static T FillObject<T>(DataTable dataTable) where T : class
         {
             return FillObject<T>(dataTable.CreateDataReader());
         }
-        public static T FillObject<T>(DataTable dataTable, Action<T> callback)
+        public static T FillObject<T>(DataTable dataTable, Action<T> callback) where T : class
         {
             var result = FillObject<T>(dataTable.CreateDataReader());
 
@@ -125,13 +125,13 @@ namespace DanielCirket.ObjectMapper
 
             return result;
         }
-        public static T FillObject<T>(DataTable dataTable, T instance) where T : class
+        public static T FillObject<T>(DataTable dataTable, T instance, bool overwriteExstingProperties) where T : class
         {
-            return FillObject<T>(dataTable.CreateDataReader(), instance);
+            return FillObject<T>(dataTable.CreateDataReader(), instance, overwriteExstingProperties);
         }
-        public static T FillObject<T>(DataTable dataTable, T instance, Action<T> callback) where T : class
+        public static T FillObject<T>(DataTable dataTable, T instance, bool overwriteExstingProperties, Action<T> callback) where T : class
         {
-            var result = FillObject<T>(dataTable.CreateDataReader(), instance);
+            var result = FillObject<T>(dataTable.CreateDataReader(), instance, overwriteExstingProperties);
 
             if (result != null)
                 callback(result);
@@ -139,33 +139,33 @@ namespace DanielCirket.ObjectMapper
             return result;
         }
 
-        public static List<T> FillCollection<T>(IDataReader dataReader)
+        public static List<T> FillCollection<T>(IDataReader datareader) where T : class
         {
             List<T> listObjects = new List<T>();
 
-            if (dataReader != null)
+            if (datareader != null)
             {
-                while (dataReader.Read())
+                while (datareader.Read())
                 {
-                    T fillObject = CreateObject<T>(dataReader);
+                    T fillObject = CreateObject<T>(datareader);
 
                     listObjects.Add(fillObject);
                 }
 
-                dataReader.Close();
+                datareader.Close();
             }
 
             return listObjects;
         }
-        public static List<T> FillCollection<T>(IDataReader dataReader, Action<T> callback)
+        public static List<T> FillCollection<T>(IDataReader datareader, Action<T> callback) where T : class
         {
             List<T> listObjects = new List<T>();
 
-            if (dataReader != null)
+            if (datareader != null)
             {
-                while (dataReader.Read())
+                while (datareader.Read())
                 {
-                    T fillObject = CreateObject<T>(dataReader);
+                    T fillObject = CreateObject<T>(datareader);
 
                     if (fillObject != null)
                         callback(fillObject);
@@ -173,32 +173,35 @@ namespace DanielCirket.ObjectMapper
                     listObjects.Add(fillObject);
                 }
 
-                dataReader.Close();
+                datareader.Close();
             }
 
             return listObjects;
         }
 
-        public static List<T> FillCollection<T>(DataTable dataTable)
+        public static List<T> FillCollection<T>(DataTable dataTable) where T : class
         {
             return FillCollection<T>(dataTable.CreateDataReader());
         }
-        public static List<T> FillCollection<T>(DataTable dataTable, Action<T> callback)
+        public static List<T> FillCollection<T>(DataTable dataTable, Action<T> callback) where T : class
         {
             return FillCollection<T>(dataTable.CreateDataReader(), callback);
         }
 
-        private static T CreateObject<T>(IDataReader dataReader)
+        private static T CreateObject<T>(IDataReader datareader, T instance = null, bool overwriteProperties = false) where T : class
         {
             Type objectPropertyType = null;
 
-            T createObject = Activator.CreateInstance<T>();
+            T createObject = instance;
+
+            if (createObject == null)
+                createObject = Activator.CreateInstance<T>();
 
             // get properties for type
             List<PropertyInfo> objProperties = GetPropertyInfo(createObject.GetType());
 
             // get ordinal positions in datareader
-            int[] ordinals = GetOrdinals(objProperties, dataReader);
+            int[] ordinals = GetOrdinals(objProperties, datareader);
 
             // fill object with values from 
             for (int i = 0; i <= objProperties.Count - 1; i++)
@@ -209,9 +212,27 @@ namespace DanielCirket.ObjectMapper
                 {
                     object objectValue = Null.SetNull(objPropertyInfo);
 
+                    // Check if object passed to populate.
+                    if (instance != null && objPropertyInfo.CanRead)
+                    {
+                        // Check if the property is set (Not NullValue).
+                        var currentValue = Convert.ChangeType(objPropertyInfo.GetValue(instance), objPropertyInfo.PropertyType);
+
+                        // Get type.
+                        var propType = objPropertyInfo.PropertyType;
+
+                        // Get the default value
+                        var defaultValue = objPropertyInfo.PropertyType.IsValueType 
+                            ? Convert.ChangeType(Activator.CreateInstance(objPropertyInfo.PropertyType), objPropertyInfo.PropertyType) 
+                            : null;
+
+                        if (!object.Equals(currentValue, defaultValue) && !overwriteProperties)
+                            continue;
+                    }
+
                     if (ordinals[i] != -1)
                     {
-                        if (dataReader.GetValue(ordinals[i]) == DBNull.Value)
+                        if (datareader.GetValue(ordinals[i]) == DBNull.Value)
                         {
                             // translate Null value
                             objPropertyInfo.SetValue(createObject, objectValue, null);
@@ -221,7 +242,7 @@ namespace DanielCirket.ObjectMapper
                             try
                             {
                                 // try implicit conversion first
-                                objPropertyInfo.SetValue(createObject, dataReader.GetValue(ordinals[i]), null);
+                                objPropertyInfo.SetValue(createObject, datareader.GetValue(ordinals[i]), null);
                             }
                             catch (Exception)
                             {
@@ -234,24 +255,24 @@ namespace DanielCirket.ObjectMapper
                                     if (objectPropertyType.BaseType.Equals(typeof(Enum)))
                                     {
                                         // check if value is numeric and if not convert to integer
-                                        if (Information.IsNumeric(dataReader.GetValue(ordinals[i])))
+                                        if (Information.IsNumeric(datareader.GetValue(ordinals[i])))
                                         {
-                                            ((PropertyInfo)objProperties[i]).SetValue(createObject, Enum.ToObject(objectPropertyType, Convert.ToInt32(dataReader.GetValue(ordinals[i]))), null);
+                                            ((PropertyInfo)objProperties[i]).SetValue(createObject, Enum.ToObject(objectPropertyType, Convert.ToInt32(datareader.GetValue(ordinals[i]))), null);
                                         }
                                         else
                                         {
-                                            ((PropertyInfo)objProperties[i]).SetValue(createObject, Enum.ToObject(objectPropertyType, dataReader.GetValue(ordinals[i])), null);
+                                            ((PropertyInfo)objProperties[i]).SetValue(createObject, Enum.ToObject(objectPropertyType, datareader.GetValue(ordinals[i])), null);
                                         }
                                     }
                                     else
                                     {
                                         // try explicit conversion.
-                                        objPropertyInfo.SetValue(createObject, Convert.ChangeType(dataReader.GetValue(ordinals[i]), objectPropertyType), null);
+                                        objPropertyInfo.SetValue(createObject, Convert.ChangeType(datareader.GetValue(ordinals[i]), objectPropertyType), null);
                                     }
                                 }
                                 catch (Exception)
                                 {
-                                    objPropertyInfo.SetValue(createObject, Convert.ChangeType(dataReader.GetValue(ordinals[i]), objectPropertyType), null);
+                                    objPropertyInfo.SetValue(createObject, Convert.ChangeType(datareader.GetValue(ordinals[i]), objectPropertyType), null);
                                 }
                             }
                         }
@@ -264,81 +285,6 @@ namespace DanielCirket.ObjectMapper
             }
 
             return createObject;
-        }
-        private static T FillExistingObject<T>(IDataReader dataReader, T instance)
-        {
-            Type objectPropertyType = null;
-
-            // get properties for type
-            List<PropertyInfo> objProperties = GetPropertyInfo(instance.GetType());
-
-            // get ordinal positions in datareader
-            int[] ordinals = GetOrdinals(objProperties, dataReader);
-
-            // fill object with values from 
-            for (int i = 0; i <= objProperties.Count - 1; i++)
-            {
-                PropertyInfo objPropertyInfo = (PropertyInfo)objProperties[i];
-
-                if (objPropertyInfo.CanWrite)
-                {
-                    object objectValue = Null.SetNull(objPropertyInfo);
-
-                    if (ordinals[i] != -1)
-                    {
-                        if (dataReader.GetValue(ordinals[i]) == DBNull.Value)
-                        {
-                            // translate Null value
-                            objPropertyInfo.SetValue(instance, objectValue, null);
-                        }
-                        else
-                        {
-                            try
-                            {
-                                // try implicit conversion first
-                                objPropertyInfo.SetValue(instance, dataReader.GetValue(ordinals[i]), null);
-                            }
-                            catch (Exception)
-                            {
-                                // business object info class member data type does not match datareader member data type
-                                try
-                                {
-                                    objectPropertyType = objPropertyInfo.PropertyType;
-
-                                    //need to handle enumeration conversions differently than other base types
-                                    if (objectPropertyType.BaseType.Equals(typeof(Enum)))
-                                    {
-                                        // check if value is numeric and if not convert to integer
-                                        if (Information.IsNumeric(dataReader.GetValue(ordinals[i])))
-                                        {
-                                            ((PropertyInfo)objProperties[i]).SetValue(instance, Enum.ToObject(objectPropertyType, Convert.ToInt32(dataReader.GetValue(ordinals[i]))), null);
-                                        }
-                                        else
-                                        {
-                                            ((PropertyInfo)objProperties[i]).SetValue(instance, Enum.ToObject(objectPropertyType, dataReader.GetValue(ordinals[i])), null);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        // try explicit conversion.
-                                        objPropertyInfo.SetValue(instance, Convert.ChangeType(dataReader.GetValue(ordinals[i]), objectPropertyType), null);
-                                    }
-                                }
-                                catch (Exception)
-                                {
-                                    objPropertyInfo.SetValue(instance, Convert.ChangeType(dataReader.GetValue(ordinals[i]), objectPropertyType), null);
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // property doesn't exist, do nothing.
-                    }
-                }
-            }
-
-            return instance;
         }
 
         private static List<PropertyInfo> GetPropertyInfo(Type objectType)
@@ -359,18 +305,18 @@ namespace DanielCirket.ObjectMapper
 
             return objectProperties;
         }
-        private static int[] GetOrdinals(List<PropertyInfo> objProperties, IDataReader dataReader)
+        private static int[] GetOrdinals(List<PropertyInfo> objProperties, IDataReader datareader)
         {
             int[] listOrdinals = new int[objProperties.Count + 1];
 
-            if (dataReader != null)
+            if (datareader != null)
             {
                 for (int i = 0; i < objProperties.Count; i++)
                 {
                     listOrdinals[i] = -1;
                     try
                     {
-                        listOrdinals[i] = dataReader.GetOrdinal(((PropertyInfo)objProperties[i]).Name);
+                        listOrdinals[i] = datareader.GetOrdinal(((PropertyInfo)objProperties[i]).Name);
                     }
                     catch (Exception)
                     {

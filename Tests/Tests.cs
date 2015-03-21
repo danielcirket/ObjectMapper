@@ -434,9 +434,50 @@ namespace Tests
 
             TestObject result = null;
 
-            Measure("FillObject Single Existing Item", 500, () => 
+            Measure("FillObject Single Existing Item without Overwrite", 500, () => 
             {
-                result = ObjectMapper.FillObject<TestObject>(dataTable, new TestObject());
+                result = ObjectMapper.FillObject<TestObject>(dataTable, new TestObject { StringProp = "Don't Overwrite Me!" }, false);
+            });
+
+            Assert.AreEqual(10, result.IntProp);
+            Assert.AreEqual("Don't Overwrite Me!", result.StringProp);
+            Assert.AreEqual(DateTime.Today, result.DateTimeProp);
+            Assert.AreEqual(bytearray, result.ByteArrayProp);
+            Assert.AreEqual(bytearray, result.ArrayProp);
+            Assert.AreEqual(true, result.BitProp);
+            Assert.AreEqual(12.99m, result.DecimalProp);
+        }
+
+        [Test]
+        public void ObjectMapper_FillObject_1_Existing_Items_With_Overwrite()
+        {
+            var dataTable = new DataTable("ObjectTable");
+
+            dataTable.Columns.Add("IntProp", typeof(int));
+            dataTable.Columns.Add("StringProp", typeof(string));
+            dataTable.Columns.Add("DateTimeProp", typeof(DateTime));
+            dataTable.Columns.Add("ByteArrayProp", typeof(Byte[]));
+            dataTable.Columns.Add("ArrayProp", typeof(Array));
+            dataTable.Columns.Add("BitProp", typeof(Boolean));
+            dataTable.Columns.Add("DecimalProp", typeof(decimal));
+
+            var bytearray = Encoding.ASCII.GetBytes("Hello This is test");
+
+            dataTable.Rows.Add(
+                    10,
+                    "string",
+                    DateTime.Today,
+                    bytearray,
+                    bytearray,
+                    true,
+                    12.99m
+                );
+
+            TestObject result = null;
+
+            Measure("FillObject Single Existing Item with Overwrite", 500, () =>
+            {
+                result = ObjectMapper.FillObject<TestObject>(dataTable, new TestObject { IntProp = 1, StringProp = "Overwrite Me!", DateTimeProp = DateTime.Today.AddDays(-1) }, true);
             });
 
             Assert.AreEqual(10, result.IntProp);
@@ -478,7 +519,7 @@ namespace Tests
 
             Measure("FillObject Single Existing Item with Callback", 500, () => 
             {
-                result = ObjectMapper.FillObject<TestObject>(dataTable, new TestObject(), (T) => { T.ModifyItems(); });
+                result = ObjectMapper.FillObject<TestObject>(dataTable, new TestObject(), false, (T) => { T.ModifyItems(); });
             });
 
             Assert.AreEqual(1, result.IntProp);
