@@ -376,7 +376,6 @@ namespace Tests
             dataTable.Columns.Add("DecimalProp", typeof(decimal));
 
             var bytearray = Encoding.ASCII.GetBytes("Hello This is test");
-            var modifiedByteArray = Encoding.ASCII.GetBytes("Modified byte array");
            
             dataTable.Rows.Add(
                     10,
@@ -394,17 +393,17 @@ namespace Tests
             {
                 result = ObjectMapper.FillObject<TestObject>(dataTable, (T) =>
                 {
-                    T.ModifyItems();
+                    T.StringProp = "blah";
                 });
             });
 
-            Assert.AreEqual(1, result.IntProp);
+            Assert.AreEqual(10, result.IntProp);
             Assert.AreEqual("blah", result.StringProp);
-            Assert.AreEqual(new DateTime(2015, 1, 1), result.DateTimeProp);
-            Assert.AreEqual(modifiedByteArray, result.ByteArrayProp);
-            Assert.AreEqual(modifiedByteArray, result.ArrayProp);
-            Assert.AreEqual(false, result.BitProp);
-            Assert.AreEqual(9.99m, result.DecimalProp);
+            Assert.AreEqual(DateTime.Today, result.DateTimeProp);
+            Assert.AreEqual(bytearray, result.ByteArrayProp);
+            Assert.AreEqual(bytearray, result.ArrayProp);
+            Assert.AreEqual(true, result.BitProp);
+            Assert.AreEqual(12.99m, result.DecimalProp);
         }
 
         [Test]
@@ -561,8 +560,6 @@ namespace Tests
         public Array ArrayProp { get; set; }
         public Boolean BitProp { get; set; }
         public decimal DecimalProp { get; set; }
-
-        public TestObject() { }
 
         public void ModifyItems()
         {

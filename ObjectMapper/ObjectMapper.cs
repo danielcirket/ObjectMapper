@@ -39,7 +39,7 @@ namespace DanielCirket.ObjectMapper
             return (T)Convert.ChangeType(obj, typeof(T));
         }
 
-        public static T FillObject<T>(IDataReader datareader) where T : class
+        public static T FillObject<T>(IDataReader datareader) where T : class, new()
         {
             T fillObject;
 
@@ -66,7 +66,7 @@ namespace DanielCirket.ObjectMapper
 
             return fillObject;
         }
-        public static T FillObject<T>(IDataReader datareader, Action<T> callback) where T : class
+        public static T FillObject<T>(IDataReader datareader, Action<T> callback) where T : class, new()
         {
             var result = FillObject<T>(datareader);
 
@@ -75,7 +75,7 @@ namespace DanielCirket.ObjectMapper
 
             return result;
         }
-        public static T FillObject<T>(IDataReader datareader, T instance, bool overwriteExstingProperties) where T : class
+        public static T FillObject<T>(IDataReader datareader, T instance, bool overwriteExstingProperties) where T : class, new()
         {
             T fillObject;
 
@@ -102,7 +102,7 @@ namespace DanielCirket.ObjectMapper
 
             return fillObject;
         }
-        public static T FillObject<T>(IDataReader datareader, T instance, bool overwriteExstingProperties, Action<T> callback) where T : class
+        public static T FillObject<T>(IDataReader datareader, T instance, bool overwriteExstingProperties, Action<T> callback) where T : class, new()
         {
             var result = FillObject<T>(datareader, instance, overwriteExstingProperties);
 
@@ -112,11 +112,11 @@ namespace DanielCirket.ObjectMapper
             return result;
         }
 
-        public static T FillObject<T>(DataTable dataTable) where T : class
+        public static T FillObject<T>(DataTable dataTable) where T : class, new()
         {
             return FillObject<T>(dataTable.CreateDataReader());
         }
-        public static T FillObject<T>(DataTable dataTable, Action<T> callback) where T : class
+        public static T FillObject<T>(DataTable dataTable, Action<T> callback) where T : class, new()
         {
             var result = FillObject<T>(dataTable.CreateDataReader());
 
@@ -125,11 +125,11 @@ namespace DanielCirket.ObjectMapper
 
             return result;
         }
-        public static T FillObject<T>(DataTable dataTable, T instance, bool overwriteExstingProperties) where T : class
+        public static T FillObject<T>(DataTable dataTable, T instance, bool overwriteExstingProperties) where T : class, new()
         {
             return FillObject<T>(dataTable.CreateDataReader(), instance, overwriteExstingProperties);
         }
-        public static T FillObject<T>(DataTable dataTable, T instance, bool overwriteExstingProperties, Action<T> callback) where T : class
+        public static T FillObject<T>(DataTable dataTable, T instance, bool overwriteExstingProperties, Action<T> callback) where T : class, new()
         {
             var result = FillObject<T>(dataTable.CreateDataReader(), instance, overwriteExstingProperties);
 
@@ -139,7 +139,7 @@ namespace DanielCirket.ObjectMapper
             return result;
         }
 
-        public static List<T> FillCollection<T>(IDataReader datareader) where T : class
+        public static List<T> FillCollection<T>(IDataReader datareader) where T : class, new()
         {
             List<T> listObjects = new List<T>();
 
@@ -157,7 +157,7 @@ namespace DanielCirket.ObjectMapper
 
             return listObjects;
         }
-        public static List<T> FillCollection<T>(IDataReader datareader, Action<T> callback) where T : class
+        public static List<T> FillCollection<T>(IDataReader datareader, Action<T> callback) where T : class, new()
         {
             List<T> listObjects = new List<T>();
 
@@ -179,23 +179,23 @@ namespace DanielCirket.ObjectMapper
             return listObjects;
         }
 
-        public static List<T> FillCollection<T>(DataTable dataTable) where T : class
+        public static List<T> FillCollection<T>(DataTable dataTable) where T : class, new()
         {
             return FillCollection<T>(dataTable.CreateDataReader());
         }
-        public static List<T> FillCollection<T>(DataTable dataTable, Action<T> callback) where T : class
+        public static List<T> FillCollection<T>(DataTable dataTable, Action<T> callback) where T : class, new()
         {
             return FillCollection<T>(dataTable.CreateDataReader(), callback);
         }
 
-        private static T CreateObject<T>(IDataReader datareader, T instance = null, bool overwriteProperties = false) where T : class
+        private static T CreateObject<T>(IDataReader datareader, T instance = null, bool overwriteProperties = false) where T : class, new()
         {
             Type objectPropertyType = null;
 
             T createObject = instance;
 
             if (createObject == null)
-                createObject = Activator.CreateInstance<T>();
+                createObject = new T();
 
             // get properties for type
             List<PropertyInfo> objProperties = GetPropertyInfo(createObject.GetType());
