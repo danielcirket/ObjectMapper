@@ -22,11 +22,15 @@ namespace DanielCirket.ObjectMapper
 
         #region Properties
 
-        private static ICacheHelper CacheHelper
+        public static ICacheHelper CacheHelper
         {
             get
             {
                 return _cacheHelper ?? new CacheHelper();
+            }
+            set
+            {
+                _cacheHelper = value;
             }
         }
 
