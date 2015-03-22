@@ -20,16 +20,16 @@ Currently does not deal with complex object properties (e.g. ArrayLists, HashTab
 ```ObjectMapper.FillCollection<T>( dataReader );```  
 
 **Multiple rows to List\<T\> with Callback on each object**  
-```ObjectMapper.FillCollection<T>( dataReader, (T) => { T.SomeMethod(); });```  
+```ObjectMapper.FillCollection<T>( dataReader, (T) => { //Some Action Here });```  
 
 **Single row to Object with Callback**  
-```ObjectMapper.FillObject<T>( dataReader, (T) => { T.SomeMethod(); });```
+```ObjectMapper.FillObject<T>( dataReader, (T) => { //Some Action Here });```
 
 **Single row to Existing Object**  
 ```ObjectMapper.FillObject<T>( dataReader, existingObject, bool);```
 
 **Single row to Existing Object with Callback**  
-```ObjectMapper.FillObject<T>( dataReader, existingObject, bool, (T) => { T.SomeMethod(); });```
+```ObjectMapper.FillObject<T>( dataReader, existingObject, bool, (T) => { //Some Action Here });```
 
 *Please note: FillObject with existing item, bool determines whether properties already set will be overwritten if they exist in the datareader.*
 
