@@ -11,7 +11,7 @@ Hydrates objects from a datareader or datatable.
 
 **Single column to object**  
 ```ObjectMapper.FillObject<T>( object );```  
-*Useful if you only return a single value (e.g. Id) from the query: For example: ObjectMapper.FillObject<int>( IdFromQuery)*  
+*Useful if you only return a single value (e.g. Id) from the query: For example: ObjectMapper.FillObject<int>( IdFromQuery)*    
 **Multiple rows to List\<T\>**  
 ```ObjectMapper.FillCollection<T>( dataReader );```  
 
