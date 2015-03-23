@@ -1,6 +1,6 @@
 ## ObjectMapper
 
-Simple ORM library.
+Simple Micro ORM library.
 
 Hydrates objects from a datareader or datatable.
 
