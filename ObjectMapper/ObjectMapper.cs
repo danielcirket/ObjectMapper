@@ -12,7 +12,7 @@ namespace DanielCirket.ObjectMapper
     /// NOTE: Does not work for complex objects (e.g. ArrayLists, HashTables, Custom Objects etc).
     /// IF complex objects need to be filled, more custom code will need to be written.
     /// </summary>
-    public class ObjectMapper
+    public static class ObjectMapper
     {
         #region Fields
 
@@ -22,11 +22,12 @@ namespace DanielCirket.ObjectMapper
 
         #region Properties
 
+        // TODO: Make this thread safe.
         public static ICacheHelper CacheHelper
         {
             get
             {
-                return _cacheHelper ?? new CacheHelper();
+                return _cacheHelper;
             }
             set
             {
@@ -248,9 +249,9 @@ namespace DanielCirket.ObjectMapper
                                 // try implicit conversion first
                                 objPropertyInfo.SetValue(createObject, datareader.GetValue(ordinals[i]), null);
                             }
-                            catch (Exception)
+                            catch (Exception ex)
                             {
-                                // business object info class member data type does not match datareader member data type
+                                // business object info class member data type does not match datareader member data type e.g. Int to Bool conversion.
                                 try
                                 {
                                     objectPropertyType = objPropertyInfo.PropertyType;
@@ -330,6 +331,15 @@ namespace DanielCirket.ObjectMapper
             }
 
             return listOrdinals;
+        }
+
+        #endregion
+
+        #region Constructor
+
+        static ObjectMapper()
+        {
+            CacheHelper = new CacheHelper();
         }
 
         #endregion
