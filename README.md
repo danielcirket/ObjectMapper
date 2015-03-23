@@ -1,12 +1,8 @@
 ## ObjectMapper
 
-Super simple object mapper, didn't need the features in some of the bigger libraries so put this together for a personal project and thought I'd share it here.
+Simple ORM library.
 
 Hydrates objects from a datareader or datatable.
-
-Currently does not deal with complex object properties (e.g. ArrayLists, HashTables, Custom Objects etc).
-
-
 
 ### Usage Examples
 
@@ -14,7 +10,8 @@ Currently does not deal with complex object properties (e.g. ArrayLists, HashTab
 ```ObjectMapper.FillObject<T>( dataReader );```  
 
 **Single column to object**  
-```ObjectMapper.FillObject<int>( dataReader );```  
+```ObjectMapper.FillObject<T>( object );```  
+*Useful if you only return a single value (e.g. Id) from the query*  
 
 **Multiple rows to List\<T\>**  
 ```ObjectMapper.FillCollection<T>( dataReader );```  
@@ -26,12 +23,10 @@ Currently does not deal with complex object properties (e.g. ArrayLists, HashTab
 ```ObjectMapper.FillObject<T>( dataReader, (T) => { //Some Action Here });```
 
 **Single row to Existing Object**  
-```ObjectMapper.FillObject<T>( dataReader, existingObject, bool);```
+```ObjectMapper.FillObject<T>( dataReader, existingObject, overwriteExstingProperties);```
 
 **Single row to Existing Object with Callback**  
-```ObjectMapper.FillObject<T>( dataReader, existingObject, bool, (T) => { //Some Action Here });```
-
-*Please note: FillObject with existing item, bool determines whether properties already set will be overwritten if they exist in the datareader.*
+```ObjectMapper.FillObject<T>( dataReader, existingObject, overwriteExstingProperties, (T) => { //Some Action Here });```
 
 ### Tests
 
