@@ -261,7 +261,7 @@ namespace Tests
 
             TestObject result = null;
 
-            Measure("FillObject Single Item", 1, () =>
+            Measure("FillObject Single Item", 500, () =>
             {
                 result = ObjectMapper.FillObject<TestObject>(dataTable);
             });
@@ -492,7 +492,7 @@ namespace Tests
 
             TestObject result = null;
 
-            Measure("FillObject Single Existing Item without Overwrite", 1, () =>
+            Measure("FillObject Single Existing Item without Overwrite", 500, () =>
             {
                 result = ObjectMapper.FillObject<TestObject>(dataTable, new TestObject { StringProp = "Don't Overwrite Me!" }, false);
             });
