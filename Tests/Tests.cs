@@ -546,7 +546,7 @@ namespace Tests
                 results[i] = stopwatch.Elapsed.TotalMilliseconds;
             }
 
-            Console.WriteLine("{0} - Average: {1}, Min: {2}, Max: {3}", title, results.Average(), results.Min(), results.Max());
+            Console.WriteLine("| {0} | {1}ms | {2}ms | {3}ms | {4} | ", title, Math.Round(results.Average(), 2, MidpointRounding.AwayFromZero), Math.Round(results.Min(), 2, MidpointRounding.AwayFromZero), Math.Round(results.Max(), 2, MidpointRounding.AwayFromZero), reps);
         }
     }
 
