@@ -332,11 +332,11 @@ namespace DanielCirket.ObjectMapper
                             // 6a. Check if the property is set.
                             var currentPropertyValue = propertyInfo.GetValue(instance);
 
-                            // Get the default value
+                            // 6b. Get the default value
                             var defaultValue = GetDefault(propertyInfo.PropertyType);
 
-                            // Check if value is not default and if properties should not be overwritten.
-                            // If the property is 'default' it can be set.
+                            // 6c.  Check if value is not default and if properties should not be overwritten.
+                            //      If the property is 'default' it can be set.
                             if (!object.Equals(currentPropertyValue, defaultValue) && !overwriteProperties)
                                 continue;
                         }
