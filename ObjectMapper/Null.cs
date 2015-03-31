@@ -1,10 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace DanielCirket.ObjectMapper
 {
-    public class Null
+    public static class Null
     {
+        private static Dictionary<string, object> _nullLookup;
+
+        public static Dictionary<string, object> NullLookup
+        {
+            get
+            {
+                return _nullLookup;
+            }
+            private set
+            {
+                _nullLookup = value;
+            }
+        }
+
         public static short NullShort
         {
             get
@@ -58,7 +73,7 @@ namespace DanielCirket.ObjectMapper
         {
             get
             {
-                return "";
+                return string.Empty;
             }
         }
         public static bool NullBoolean
@@ -79,55 +94,19 @@ namespace DanielCirket.ObjectMapper
         public static object SetNull(PropertyInfo objPropertyInfo)
         {
             object returnValue = null;
-            switch (objPropertyInfo.PropertyType.ToString())
+
+            if (NullLookup.TryGetValue(objPropertyInfo.PropertyType.ToString(), out returnValue))
+                return returnValue;
+
+            //Enumerations default to the first entry
+            Type propertyType = objPropertyInfo.PropertyType;
+            if (objPropertyInfo.PropertyType.BaseType.Equals(typeof(Enum)))
             {
-                case "System.Int16":
-                    returnValue = NullShort;
-                    break;
-                case "System.Int32":
-                case "System.Int64":
-                    returnValue = NullInteger;
-                    break;
-                case "system.Byte":
-                    returnValue = NullByte;
-                    break;
-                case "System.Single":
-                    returnValue = NullSingle;
-                    break;
-                case "System.Double":
-                    returnValue = NullDouble;
-                    break;
-                case "System.Decimal":
-                    returnValue = NullDecimal;
-                    break;
-                case "System.DateTime":
-                    returnValue = NullDate;
-                    break;
-                case "System.String":
-                case "System.Char":
-                    returnValue = NullString;
-                    break;
-                case "System.Boolean":
-                    returnValue = NullBoolean;
-                    break;
-                case "System.Guid":
-                    returnValue = NullGuid;
-                    break;
-                default:
-                    //Enumerations default to the first entry
-                    Type pType = objPropertyInfo.PropertyType;
-                    if (pType.BaseType.Equals(typeof(Enum)))
-                    {
-                        Array objEnumValues = Enum.GetValues(pType);
-                        Array.Sort(objEnumValues);
-                        returnValue = Enum.ToObject(pType, objEnumValues.GetValue(0));
-                    }
-                    else //complex object
-                    {
-                        returnValue = null;
-                    }
-                    break;
+                Array objEnumValues = Enum.GetValues(propertyType);
+                Array.Sort(objEnumValues);
+                return Enum.ToObject(propertyType, objEnumValues.GetValue(0));
             }
+
             return returnValue;
         }
         public static object GetNull(object objField, object objDBNull)
@@ -216,6 +195,26 @@ namespace DanielCirket.ObjectMapper
                 }
             }
             return returnValue;
+        }
+
+        static Null()
+        {
+            // Initialise Lookup Dictionary
+            NullLookup = new Dictionary<string, object>();
+
+            // Add items as this isn't going to change.
+            NullLookup["System.Int16"] = NullShort;
+            NullLookup["System.Int32"] = NullInteger;
+            NullLookup["System.Int64"] = NullInteger;
+            NullLookup["System.Byte"] = NullByte;
+            NullLookup["System.Single"] = NullSingle;
+            NullLookup["System.Double"] = NullDouble;
+            NullLookup["System.Decimal"] = NullDecimal;
+            NullLookup["System.DateTime"] = NullDate;
+            NullLookup["System.String"] = NullString;
+            NullLookup["System.Char"] = NullString;
+            NullLookup["System.Boolean"] = NullBoolean;
+            NullLookup["System.Guid"] = NullGuid;
         }
     }
 }
