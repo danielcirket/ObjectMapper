@@ -26,7 +26,7 @@ Hydrates objects from a datareader or datatable.
 ```ObjectMapper.FillObject<T>( dataReader, existingObject, overwriteExstingProperties);```
 
 **Single row to Existing Object with Callback**  
-```ObjectMapper.FillObject<T>( dataReader, existingObject, overwriteExstingProperties, (T) => { //Some Action Here });```
+```ObjectMapper.FillObject<T>( dataReader, existingObject, overwriteExstingProperties, (existingObject) => { //Some Action Here });```
 
 ### Tests
 
