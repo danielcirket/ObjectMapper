@@ -243,9 +243,11 @@ namespace Tests
             dataTable.Columns.Add("BitProp", typeof(Boolean));
             dataTable.Columns.Add("DecimalProp", typeof(decimal));
             dataTable.Columns.Add("GuidProp", typeof(Guid));
+            dataTable.Columns.Add("EnumProp", typeof(int));
 
             var bytearray = Encoding.ASCII.GetBytes("Hello This is test");
             var guid = new Guid("e3b16c58-5737-410f-9548-227b9b34cf68");
+            var enumValue = (int)TestObject.TestEnum.Two;
 
             dataTable.Rows.Add(
                     10,
@@ -255,7 +257,8 @@ namespace Tests
                     bytearray,
                     true,
                     12.99m,
-                    guid
+                    guid,
+                    enumValue
                 );
 
 
@@ -340,9 +343,11 @@ namespace Tests
             dataTable.Columns.Add("BitProp", typeof(Boolean));
             dataTable.Columns.Add("DecimalProp", typeof(decimal));
             dataTable.Columns.Add("GuidProp", typeof(Guid));
+            dataTable.Columns.Add("EnumProp", typeof(int));
 
             var bytearray = Encoding.ASCII.GetBytes("Hello This is test");
             var guid = new Guid("e3b16c58-5737-410f-9548-227b9b34cf68");
+            var enumValue = (int)TestObject.TestEnum.Two;
 
             for (int i = 0; i < 5000; i++)
             {
@@ -354,7 +359,8 @@ namespace Tests
                 bytearray,
                 true,
                 12.99m,
-                guid);
+                guid,
+                enumValue);
             }
 
             List<TestObject> result = null;
@@ -372,6 +378,7 @@ namespace Tests
             Assert.AreEqual(true, result[0].BitProp);
             Assert.AreEqual(12.99m, result[0].DecimalProp);
             Assert.AreEqual(new Guid("e3b16c58-5737-410f-9548-227b9b34cf68"), result[0].GuidProp);
+            Assert.AreEqual(TestObject.TestEnum.Two, result[0].EnumProp);
         }
 
         [Test]
@@ -387,9 +394,11 @@ namespace Tests
             dataTable.Columns.Add("BitProp", typeof(Boolean));
             dataTable.Columns.Add("DecimalProp", typeof(decimal));
             dataTable.Columns.Add("GuidProp", typeof(Guid));
+            dataTable.Columns.Add("EnumProp", typeof(int));
 
             var bytearray = Encoding.ASCII.GetBytes("Hello This is test");
             var guid = new Guid("e3b16c58-5737-410f-9548-227b9b34cf68");
+            var enumValue = (int)TestObject.TestEnum.Two;
 
             for (int i = 0; i < 50000; i++)
             {
@@ -401,7 +410,8 @@ namespace Tests
                 bytearray,
                 true,
                 12.99m,
-                guid);
+                guid,
+                enumValue);
             }
 
             List<TestObject> result = null;
@@ -419,6 +429,7 @@ namespace Tests
             Assert.AreEqual(true, result[0].BitProp);
             Assert.AreEqual(12.99m, result[0].DecimalProp);
             Assert.AreEqual(new Guid("e3b16c58-5737-410f-9548-227b9b34cf68"), result[0].GuidProp);
+            Assert.AreEqual(TestObject.TestEnum.Two, result[0].EnumProp);
         }
 
         [Test]
